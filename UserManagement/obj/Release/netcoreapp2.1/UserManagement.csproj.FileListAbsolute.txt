@@ -1,0 +1,14 @@
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\bin\Release\netcoreapp2.1\UserManagement.deps.json
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\bin\Release\netcoreapp2.1\UserManagement.runtimeconfig.json
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\bin\Release\netcoreapp2.1\UserManagement.runtimeconfig.dev.json
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\bin\Release\netcoreapp2.1\UserManagement.dll
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\bin\Release\netcoreapp2.1\UserManagement.pdb
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.csproj.CoreCompileInputs.cache
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.RazorAssemblyInfo.cache
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.RazorAssemblyInfo.cs
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.AssemblyInfoInputs.cache
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.AssemblyInfo.cs
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.RazorTargetAssemblyInfo.cache
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.dll
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.pdb
+E:\Bootcamp\git\SingleSignOn\UserManagement\UserManagement\obj\Release\netcoreapp2.1\UserManagement.csprojAssemblyReference.cache
