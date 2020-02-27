@@ -40,11 +40,14 @@ namespace UserManagement
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddEntityFrameworkMySql();
+
             services.AddDbContext<MyContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("MyConnection")));
 
             var connectionString = new ConnectionString(Configuration.GetConnectionString("MyConnection"));
+
             services.AddSingleton(connectionString);
+
             services.AddIdentity<Employee, Role>()
                 .AddEntityFrameworkStores<MyContext>()
                 .AddDefaultTokenProviders();
@@ -58,7 +61,7 @@ namespace UserManagement
                     ValidateIssuer = true,
                     ValidateAudience = false,
                     ValidAudience = Configuration["Jwt:Audience"],
-                    ValidIssuer = Configuration["Jwt:Issurer"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
@@ -67,10 +70,10 @@ namespace UserManagement
             {
                 options.AutomaticAuthentication = false;
             });
-            
 
-            services.AddScoped<IUserRepository,UserRepository>();
-            services.AddScoped<IUserService,UserService>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

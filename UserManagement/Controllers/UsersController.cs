@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +16,13 @@ using UserManagement.Models;
 using UserManagement.Services.Interfaces;
 using UserManagement.ViewModels;
 
+
+
 namespace UserManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
         private readonly UserManager<Employee> _userManager;
@@ -36,6 +41,8 @@ namespace UserManagement.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
+
         [HttpGet]
         public IEnumerable<Employee> Get()
         {
@@ -57,7 +64,8 @@ namespace UserManagement.Controllers
             return BadRequest("Failed to Add User");
         }
         [HttpDelete("{Id}")]
-        public IActionResult Delete(string Id) {
+        public IActionResult Delete(string Id)
+        {
             var result = _userService.Delete(Id);
             if (result == true)
             {
@@ -75,7 +83,9 @@ namespace UserManagement.Controllers
             }
             return BadRequest();
         }
+
         [HttpPost("Register")]
+
         public async Task<IActionResult> Register(Employee model)
         {
             if (ModelState.IsValid)
@@ -87,10 +97,7 @@ namespace UserManagement.Controllers
                     user.Email = model.Email;
                     user.UserName = user.Email;
                     user.PasswordHash = model.PasswordHash;
-                    user.SecurityStamp = Guid.NewGuid().ToString();
-                    var a = await _userManager.GetSecurityStampAsync(user);
-                    user.Token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                    user.TokenStatus = true;
+                    user.SecurityStamp = _userManager.GetSecurityStampAsync(user).ToString();
 
                     var result = await _userManager.CreateAsync(user, model.PasswordHash);
                     if (result.Succeeded)
@@ -105,10 +112,12 @@ namespace UserManagement.Controllers
             }
             return BadRequest(ModelState);
         }
+
         [HttpPost("Login")]
+
         public async Task<IActionResult> Login(UserVM userVM)
         {
-            var result = await _signInManager.PasswordSignInAsync(userVM.UserName, userVM.PasswordHash, false, false);
+            var result = await _signInManager.PasswordSignInAsync(userVM.UserName, userVM.PasswordHash, false, true);
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByNameAsync(userVM.UserName);
@@ -158,7 +167,6 @@ namespace UserManagement.Controllers
                 {
                     var user = await _userManager.FindByNameAsync(userVM.UserName);
                     user.PasswordHash = userVM.PasswordHash;
-                    user.Token = token;
                     var result = await _userManager.ResetPasswordAsync(user, user.Token, userVM.PasswordHash);
                     if (result.Succeeded)
                     {
@@ -171,6 +179,25 @@ namespace UserManagement.Controllers
                     throw;
                 }
 
+            }
+            return BadRequest(ModelState);
+        }
+        [HttpPost("GenerateToken")]
+        public async Task<ActionResult> GenerateResetPasswordToken(UserVM userVM)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var user = await _userManager.FindByEmailAsync(userVM.Email);
+                    user.Token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    user.TokenStatus = true;
+                    return Ok(user);
+                }
+                catch
+                {
+                    throw;
+                }
             }
             return BadRequest(ModelState);
         }

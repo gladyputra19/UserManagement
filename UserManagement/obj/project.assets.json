@@ -12658,11 +12658,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\UserManagement.csproj",
+      "projectUniqueName": "E:\\UserManagement-master\\UserManagement\\UserManagement.csproj",
       "projectName": "UserManagement",
-      "projectPath": "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\UserManagement.csproj",
+      "projectPath": "E:\\UserManagement-master\\UserManagement\\UserManagement.csproj",
       "packagesPath": "C:\\Users\\glady\\.nuget\\packages\\",
-      "outputPath": "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\obj\\",
+      "outputPath": "E:\\UserManagement-master\\UserManagement\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
