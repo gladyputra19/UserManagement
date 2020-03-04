@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace UserManagement.Bases
 {
-    interface IEntity
+    public interface IEntity
     {
         [Key]
         int Id { get; set; }
-        
+        bool IsDelete { get; set; }
+        void Create();
+        void Update();
+        void Delete();
     }
 }

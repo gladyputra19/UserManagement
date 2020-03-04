@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +21,10 @@ using UserManagement.ConnectionStrings;
 using UserManagement.Contexts;
 using UserManagement.Models;
 using UserManagement.Repositories;
+using UserManagement.Repositories.Data;
 using UserManagement.Repositories.Interfaces;
 using UserManagement.Services;
+using UserManagement.Services.Data;
 using UserManagement.Services.Interfaces;
 
 namespace UserManagement
@@ -47,10 +51,41 @@ namespace UserManagement
             var connectionString = new ConnectionString(Configuration.GetConnectionString("MyConnection"));
 
             services.AddSingleton(connectionString);
+            var lockoutOptions = new LockoutOptions()
+            {
+                AllowedForNewUsers = true,
+                DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5),
+                MaxFailedAccessAttempts = 3
+            };
 
-            services.AddIdentity<Employee, Role>()
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
+            services.AddIdentity<Employee, Role>(options =>
+            {
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 3;
+
+            })
                 .AddEntityFrameworkStores<MyContext>()
                 .AddDefaultTokenProviders();
+
+            
+
+            services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -65,15 +100,31 @@ namespace UserManagement
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+            
 
             services.Configure<IISOptions>(options =>
             {
                 options.AutomaticAuthentication = false;
             });
-
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Users/Login");
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<ApplicationRepository>();
+            services.AddScoped<ApplicationUserRepository>();
+            services.AddScoped<BatchRepository>();
+            services.AddScoped<BootcampRepository>();
+            services.AddScoped<DegreeRepository>();
+            services.AddScoped<DepartmentRepository>();
+            services.AddScoped<DivisionRepository>();
+            services.AddScoped<JobTitleRepository>();
+            services.AddScoped<MajorRepository>();
+            services.AddScoped<ProvinceRepository>();
+            services.AddScoped<RegencyRepository>();
+            services.AddScoped<ReligionRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,6 +139,7 @@ namespace UserManagement
                 app.UseHsts();
             }
 
+            app.UseSession();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();

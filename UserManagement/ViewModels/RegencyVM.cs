@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using UserManagement.Bases;
 
 namespace UserManagement.ViewModels
 {
-    public class RegencyVM :IEntity, IStatus
+    [Table("tb_m_regency")]
+    public class RegencyVM :BaseModel
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-
         public int Province_Id { get; set; }
-
-        public DateTime CreateDate { get; set; }
-        public DateTime UpdateDate { get; set; }
-        public DateTime DeleteDate { get; set; }
-        public bool isDelete { get; set; }
     }
 }

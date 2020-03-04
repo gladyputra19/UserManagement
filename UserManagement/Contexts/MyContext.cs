@@ -22,9 +22,13 @@ namespace UserManagement.Contexts
         public DbSet<Religion> Religions { get; set; }
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Regency> Regencies { get; set; }
-        public DbSet<Region> Regions { get; set; }
         public DbSet<Degree> Degrees { get; set; }
-
+        public DbSet<Major> Majors { get; set; }
+        public DbSet<JobTitle> JobTitles { get; set; }
+        public DbSet<Batch> Batches { get; set; }
+        public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Bootcamp> Bootcamps { get; set; }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    if (!optionsBuilder.IsConfigured)

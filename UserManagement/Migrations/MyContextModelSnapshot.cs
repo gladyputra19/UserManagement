@@ -184,10 +184,287 @@ namespace UserManagement.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("UserManagement.Models.Application", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_application");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.ApplicationUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Application_Id");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<string>("Employee_Id");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_t_applicationusers");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Batch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_batch");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Bootcamp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Batch_Id");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<string>("Employee_Id");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<int>("Major_Id");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Batch_Id");
+
+                    b.HasIndex("Employee_Id");
+
+                    b.HasIndex("Major_Id");
+
+                    b.ToTable("tb_m_bootcamp");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Degree", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_degree");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<int>("Division_Id");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Division_Id");
+
+                    b.ToTable("tb_m_department");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Division", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_division");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.JobTitle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_jobtitle");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Major", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_major");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Province", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_province");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Regency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int?>("ProvinceId");
+
+                    b.Property<int>("Province_Id");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProvinceId");
+
+                    b.ToTable("tb_m_regency");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Religion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<bool>("IsDelete");
+
+                    b.Property<string>("Name");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tb_m_religion");
+                });
+
             modelBuilder.Entity("UserManagement.Models.Role", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRole");
 
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<bool>("isDelete");
 
                     b.ToTable("Role");
 
@@ -198,9 +475,55 @@ namespace UserManagement.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<string>("Address");
+
+                    b.Property<DateTime>("BirthDate");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<int>("Degree_Id");
+
+                    b.Property<DateTime>("DeleteDate");
+
+                    b.Property<int>("Department_Id");
+
+                    b.Property<int>("JobTitle_Id");
+
+                    b.Property<DateTime>("JoinDate");
+
+                    b.Property<bool>("LockedStatus");
+
+                    b.Property<int>("Major_Id");
+
+                    b.Property<string>("NIK");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Regency_Id");
+
+                    b.Property<int>("Religion_Id");
+
                     b.Property<string>("Token");
 
                     b.Property<bool>("TokenStatus");
+
+                    b.Property<string>("University");
+
+                    b.Property<DateTime>("UpdateDate");
+
+                    b.Property<bool>("isDelete");
+
+                    b.HasIndex("Degree_Id");
+
+                    b.HasIndex("Department_Id");
+
+                    b.HasIndex("JobTitle_Id");
+
+                    b.HasIndex("Major_Id");
+
+                    b.HasIndex("Regency_Id");
+
+                    b.HasIndex("Religion_Id");
 
                     b.ToTable("Employee");
 
@@ -249,6 +572,71 @@ namespace UserManagement.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Bootcamp", b =>
+                {
+                    b.HasOne("UserManagement.Models.Batch", "Batches")
+                        .WithMany()
+                        .HasForeignKey("Batch_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManagement.Models.Employee", "Employees")
+                        .WithMany()
+                        .HasForeignKey("Employee_Id");
+
+                    b.HasOne("UserManagement.Models.Major", "Majors")
+                        .WithMany()
+                        .HasForeignKey("Major_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Department", b =>
+                {
+                    b.HasOne("UserManagement.Models.Division", "Divisions")
+                        .WithMany()
+                        .HasForeignKey("Division_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Regency", b =>
+                {
+                    b.HasOne("UserManagement.Models.Province", "Provinces")
+                        .WithMany()
+                        .HasForeignKey("ProvinceId");
+                });
+
+            modelBuilder.Entity("UserManagement.Models.Employee", b =>
+                {
+                    b.HasOne("UserManagement.Models.Degree", "Degrees")
+                        .WithMany()
+                        .HasForeignKey("Degree_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManagement.Models.Department", "Departments")
+                        .WithMany()
+                        .HasForeignKey("Department_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManagement.Models.JobTitle", "JobTitles")
+                        .WithMany()
+                        .HasForeignKey("JobTitle_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManagement.Models.Major", "Majors")
+                        .WithMany()
+                        .HasForeignKey("Major_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManagement.Models.Regency", "Regencies")
+                        .WithMany()
+                        .HasForeignKey("Regency_Id")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("UserManagement.Models.Religion", "Religions")
+                        .WithMany()
+                        .HasForeignKey("Religion_Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

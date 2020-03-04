@@ -17,7 +17,6 @@ E:\UserManagement-master\UserManagement\bin\Debug\netcoreapp2.1\UserManagement.r
 E:\UserManagement-master\UserManagement\bin\Debug\netcoreapp2.1\UserManagement.runtimeconfig.dev.json
 E:\UserManagement-master\UserManagement\bin\Debug\netcoreapp2.1\UserManagement.dll
 E:\UserManagement-master\UserManagement\bin\Debug\netcoreapp2.1\UserManagement.pdb
-E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.csprojAssemblyReference.cache
 E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.csproj.CoreCompileInputs.cache
 E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.RazorAssemblyInfo.cache
 E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.RazorAssemblyInfo.cs
@@ -26,3 +25,4 @@ E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.A
 E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.RazorTargetAssemblyInfo.cache
 E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.dll
 E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.pdb
+E:\UserManagement-master\UserManagement\obj\Debug\netcoreapp2.1\UserManagement.csprojAssemblyReference.cache
