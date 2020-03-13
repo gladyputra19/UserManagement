@@ -493,8 +493,6 @@ namespace UserManagement.Migrations
 
                     b.Property<bool>("LockedStatus");
 
-                    b.Property<int>("Major_Id");
-
                     b.Property<string>("NIK");
 
                     b.Property<string>("Name");
@@ -518,8 +516,6 @@ namespace UserManagement.Migrations
                     b.HasIndex("Department_Id");
 
                     b.HasIndex("JobTitle_Id");
-
-                    b.HasIndex("Major_Id");
 
                     b.HasIndex("Regency_Id");
 
@@ -622,11 +618,6 @@ namespace UserManagement.Migrations
                     b.HasOne("UserManagement.Models.JobTitle", "JobTitles")
                         .WithMany()
                         .HasForeignKey("JobTitle_Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("UserManagement.Models.Major", "Majors")
-                        .WithMany()
-                        .HasForeignKey("Major_Id")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("UserManagement.Models.Regency", "Regencies")

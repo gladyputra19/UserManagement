@@ -16,15 +16,18 @@ namespace UserManagement.ViewModels
         public DateTime BirthDate { get; set; }
         public string NIK { get; set; }
         public string Role_Name { get; set; }
+        public string Application_Name { get; set; }
         public int Department_Id { get; set; }
-        public int Major_Id { get; set; }
         public int Religion_Id { get; set; }
         public int Degree_Id { get; set; }
         public int Regency_Id { get; set; }
         public int JobTitle_Id { get; set; }
-        public int Bootcamp_Id { get; set; }
         public string University { get; set; }
         public DateTime JoinDate { get; set; }
+        public string BirthPlace { get; set; }
+        public string JobTitle { get; set; }
+        public string Religion { get; set; }
+        public string Degree { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public DateTime DeleteDate { get; set; }

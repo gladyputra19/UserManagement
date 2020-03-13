@@ -11,7 +11,7 @@ using UserManagement.ViewModels;
 
 namespace UserManagement.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ApplicationsController : BasesController<ApplicationVM,ApplicationRepository>
     {

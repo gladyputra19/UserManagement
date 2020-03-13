@@ -20,7 +20,7 @@ namespace UserManagement.Services.Data
             return _roleRepository.Get();
         }
 
-        public Task<IEnumerable<Role>> Get(string Id)
+        public Role Get(string Id)
         {
             return _roleRepository.Get(Id);
         }

@@ -5,24 +5,35 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using UserManagement.Models;
+using UserManagement.ViewModels;
 
 namespace UserManagementClient.Controllers
 {
-    [Authorize(Roles = "Admin User Management")]
+    
     public class RolesController : Controller
     {
+        
         readonly HttpClient client = new HttpClient();
         public RolesController()
         {
               client.BaseAddress = new Uri("https://localhost:44336/");
         }
+
         public IActionResult Index()
         {
-            return View();
-        }
+            var role = HttpContext.Session.GetString("Role");
+            if(role == "Admin")
+            {
+                return View();
+            }
+            return RedirectToAction("Login", "Users");
+            
+        }  
 
         public JsonResult Get()
         {
@@ -51,6 +62,26 @@ namespace UserManagementClient.Controllers
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var result = client.PostAsync("Roles", byteContent).Result;
+            return Json(new { data = result });
+        }
+        public JsonResult Details(string Id)
+        {
+            var responseTask = client.GetAsync("Roles/" + Id).Result;
+            var read = responseTask.Content.ReadAsAsync<Role>().Result;
+            return Json(new { data = read });
+        }
+        public JsonResult Delete(string Id)
+        {
+            var result = client.DeleteAsync("Roles/" + Id).Result;
+            return Json(new { data = result });
+        }
+        public JsonResult Edit(string Id, RoleVM roleVM)
+        {
+            var myContent = JsonConvert.SerializeObject(roleVM);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var result = client.PutAsync("Roles/" + Id, byteContent).Result;
             return Json(new { data = result });
         }
     }

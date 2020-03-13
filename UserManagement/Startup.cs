@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using UserManagement.Auths;
 using UserManagement.ConnectionStrings;
 using UserManagement.Contexts;
 using UserManagement.Models;
@@ -61,10 +63,11 @@ namespace UserManagement
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
                 options.Cookie.HttpOnly = true;
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
+                options.Cookie.SameSite = SameSiteMode.Lax;
             });
             services.AddIdentity<Employee, Role>(options =>
             {
@@ -81,8 +84,8 @@ namespace UserManagement
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.Cookie.HttpOnly = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.Cookie.HttpOnly = false;
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
             });
@@ -100,7 +103,14 @@ namespace UserManagement
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
-            
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "Role",
+                    policyBuilder => policyBuilder.AddRequirements(
+                        new AccessControl("Admin")));
+            });
+
 
             services.Configure<IISOptions>(options =>
             {
@@ -124,7 +134,7 @@ namespace UserManagement
             services.AddScoped<ProvinceRepository>();
             services.AddScoped<RegencyRepository>();
             services.AddScoped<ReligionRepository>();
-
+            services.AddSingleton<IAuthorizationHandler, IsAdminHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,11 +30,13 @@ namespace UserManagement.Controllers
         private readonly RoleManager<Role> _roleManager;
         IConfiguration _configuration;
         IUserService _userService;
+        IRoleService _roleService;
         public UsersController(IUserService userService,
             IConfiguration configuration,
             UserManager<Employee> userManager,
             RoleManager<Role> roleManager,
-            SignInManager<Employee> signInManager
+            SignInManager<Employee> signInManager,
+            IRoleService roleService
             )
         {
             _configuration = configuration;
@@ -42,6 +44,7 @@ namespace UserManagement.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _roleService = roleService;
         }
         [HttpGet]
         public IEnumerable<Employee> Get()
@@ -75,11 +78,10 @@ namespace UserManagement.Controllers
             }
             return BadRequest();
         }
-        //[Route("GetToken")]
         [HttpGet("{Token}")]
         public Employee GetToken(string Token)
         {
-            var result =  _userService.GetToken(Token);
+            var result = _userService.GetToken(Token);
             if (result != null)
             {
                 return result;
@@ -101,11 +103,11 @@ namespace UserManagement.Controllers
                     user.PhoneNumber = model.PhoneNumber;
                     user.Address = model.Address;
                     user.BirthDate = model.BirthDate;
+                    user.Name = model.Name;
                     user.NIK = model.NIK;
                     user.JoinDate = DateTime.Now.ToLocalTime();
                     user.CreateDate = user.JoinDate;
                     user.Department_Id = model.Department_Id;
-                    user.Major_Id = model.Major_Id;
                     user.Religion_Id = model.Religion_Id;
                     user.Regency_Id = model.Regency_Id;
                     user.Degree_Id = model.Degree_Id;
@@ -117,11 +119,9 @@ namespace UserManagement.Controllers
                     var result = await _userManager.CreateAsync(user, model.PasswordHash);
                     if (result.Succeeded)
                     {
+                        await _userManager.AddToRoleAsync(user, "Staff");
                         string code = Guid.NewGuid().ToString();
-                        //code = System.Web.HttpUtility.UrlEncode(code);
-                        //var callbackUrl = Url.Action("ConfirmEmail", "Users", new { user.Id, code }, protocol: Request.Scheme);
-                        var callbackUrl = "http://192.168.128.233:1708/ConfirmEmail/" + code + "/" + user.Id;
-                        //callbackUrl.Replace(" https://localhost:44336/api/Users", "192.168.128.79");
+                        var callbackUrl = "http://192.168.128.119:1708/ConfirmEmail/" + code + "/" + user.Id;
                         string message = "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">this link</a>";
 
                         MailMessage sMail = new MailMessage();
@@ -163,6 +163,7 @@ namespace UserManagement.Controllers
                     var result = await _userManager.ConfirmEmailAsync(user, token);
                     if (result.Succeeded)
                     {
+                        user.LockedStatus = false;
                         user.LockoutEnd = DateTime.Now.ToLocalTime();
                         await _userManager.UpdateAsync(user);
                         return Ok();
@@ -177,11 +178,9 @@ namespace UserManagement.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(UserVM userVM)
         {
-            //var user = await _userManager.FindByNameAsync(userVM.UserName);
-            //if (user != null)
-            //{
             var result = await _signInManager.PasswordSignInAsync(userVM.UserName, userVM.PasswordHash, false, true);
             var user = await _userManager.FindByNameAsync(userVM.UserName);
+
             if (result.IsLockedOut)
             {
                 if (user != null)
@@ -198,7 +197,7 @@ namespace UserManagement.Controllers
                 var role = await _userManager.GetRolesAsync(user);
                 List<int> temp = new List<int>();
 
-                foreach(var i in role)
+                foreach (var i in role)
                 {
                     var priority = await _roleManager.FindByNameAsync(i);
                     temp.Add(priority.Priority);
@@ -206,7 +205,7 @@ namespace UserManagement.Controllers
 
                 int change = 0;
 
-                if(role.Count > 0)
+                if (role.Count > 0)
                 {
                     for (int i = 0; i < role.Count() - 1; i++)
                     {
@@ -223,13 +222,8 @@ namespace UserManagement.Controllers
                         }
                     }
                 }
-                
                 var check = await _roleManager.FindByNameAsync(role[change]);
                 userVM.Role_Name = check.Name;
-                
-                //var user = await _userManager.FindByNameAsync(userVM.UserName);
-                //if (user != null)
-                //{
                 var claims = new List<Claim>
                     {
                     new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
@@ -248,16 +242,14 @@ namespace UserManagement.Controllers
             );
                 var idtoken = new JwtSecurityTokenHandler().WriteToken(token);
                 claims.Add(new Claim("TokenSecurity", idtoken));
-                return Ok(idtoken + "..." + user.UserName + "..." + user.Id+"..."+userVM.Role_Name);
+                claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+                return Ok(idtoken + "..." + user.UserName + "..." + user.Id + "..." + userVM.Role_Name);
             }
             else
             {
                 var message = "Username or Password is Invalid";
                 return BadRequest(user.AccessFailedCount + "..." + message);
             }
-            //}
-            //}
-            //userVM.AccessFailedCount = user.AccessFailedCount;
             return NotFound();
         }
         [HttpPut("{Token}")]
@@ -327,9 +319,9 @@ namespace UserManagement.Controllers
                 user.Address = userVM.Address;
                 user.BirthDate = userVM.BirthDate;
                 user.NIK = userVM.NIK;
+                user.Name = userVM.Name;
                 user.UpdateDate = DateTime.Now.ToLocalTime();
                 user.Department_Id = userVM.Department_Id;
-                user.Major_Id = userVM.Major_Id;
                 user.Religion_Id = userVM.Religion_Id;
                 user.Regency_Id = userVM.Regency_Id;
                 user.Degree_Id = userVM.Degree_Id;
@@ -345,26 +337,27 @@ namespace UserManagement.Controllers
             return BadRequest();
         }
         [HttpPost("{IdUser}")]
-        public async Task<ActionResult> AddToRole(string IdUser,RoleVM roleVM)
+        public async Task<ActionResult> AddToRole(string IdUser, RoleVM roleVM)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(IdUser);
-                if(user != null)
+                if (user != null)
                 {
                     var role = await _roleManager.FindByIdAsync(roleVM.Id);
                     var check = await _userManager.IsInRoleAsync(user, role.Name);
-                    if(check == true)
+                    if (check == true)
                     {
                         return BadRequest();
                     }
-                    else {
-                    var add = await _userManager.AddToRoleAsync(user, role.Name);
-                    if (add.Succeeded)
+                    else
                     {
-                        return Ok(add);
-                    }
-                    return BadRequest();
+                        var add = await _userManager.AddToRoleAsync(user, role.Name);
+                        if (add.Succeeded)
+                        {
+                            return Ok(add);
+                        }
+                        return BadRequest();
                     }
                 }
                 return BadRequest();
@@ -384,5 +377,45 @@ namespace UserManagement.Controllers
         //        return null;
         //    }
         //}
+        [HttpGet]
+        public IEnumerable<Role> GetRole()
+        {
+            return _roleService.Get();
+        }
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            var logout = _signInManager.SignOutAsync();
+            if (logout.IsCompletedSuccessfully)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        public IEnumerable<UserVM> GetUserManager()
+        {
+            return _userService.GetUserManager();
+        }
+        [HttpPost("{UserId}")]
+        public async Task<IActionResult> AddToApplication(string UserId, ApplicationUser applicationUser)
+        {
+            if (ModelState.IsValid)
+            {
+                    var user = await _userManager.FindByIdAsync(UserId);
+                    if (user != null)
+                    {
+                        applicationUser.Create();
+                        applicationUser.Employee_Id = user.Id;
+                        var add = await _userService.AddApplication(user.Id, applicationUser);
+                        if (add > 0)
+                        {
+                            return Ok(add);
+                        }
+                        return BadRequest();
+                    }
+                }
+            return NotFound();
+
+                }
     }
 }

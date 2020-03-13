@@ -16,6 +16,12 @@ namespace UserManagement.Services
         {
             _userRepository = userRepository;
         }
+
+        public Task<int> AddApplication(string UserId, ApplicationUser applicationUser)
+        {
+            return _userRepository.AddApplication(UserId, applicationUser);
+        }
+
         public IEnumerable<Employee> Get()
         {
             return _userRepository.Get();
@@ -24,9 +30,24 @@ namespace UserManagement.Services
         {
             return _userRepository.Get(Id);
         }
+
+        public Application GetApplication(int Id)
+        {
+            return _userRepository.GetApplication(Id);
+        }
+
+        public ApplicationUser GetApplicationUser(int Id)
+        {
+            return _userRepository.GetApplicationUser(Id);
+        }
+
         public Employee GetToken(string Token)
         {
             return _userRepository.GetToken(Token);
+        }
+        public IEnumerable<UserVM> GetUserManager()
+        {
+            return _userRepository.GetUserManager();
         }
     }
 }

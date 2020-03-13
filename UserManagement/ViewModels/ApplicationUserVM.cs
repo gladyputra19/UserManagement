@@ -12,6 +12,11 @@ namespace UserManagement.ViewModels
     {
         public string Employee_Id { get; set; }
         public int Application_Id { get; set; }
+        public string Name { get; set; }
+        public string Application{ get; set; }
+        public string Role { get; set; }
+        public string NIK { get; set; }
+        
         
     }
 }

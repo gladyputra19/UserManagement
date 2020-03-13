@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\UserManagement.csproj": {}
+    "E:\\UserManagement-master\\UserManagement\\UserManagement.csproj": {}
   },
   "projects": {
-    "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\UserManagement.csproj": {
+    "E:\\UserManagement-master\\UserManagement\\UserManagement.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\UserManagement.csproj",
+        "projectUniqueName": "E:\\UserManagement-master\\UserManagement\\UserManagement.csproj",
         "projectName": "UserManagement",
-        "projectPath": "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\UserManagement.csproj",
+        "projectPath": "E:\\UserManagement-master\\UserManagement\\UserManagement.csproj",
         "packagesPath": "C:\\Users\\glady\\.nuget\\packages\\",
-        "outputPath": "E:\\Bootcamp\\git\\SingleSignOn\\UserManagement\\UserManagement\\obj\\",
+        "outputPath": "E:\\UserManagement-master\\UserManagement\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
           "C:\\Users\\glady\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.1"
@@ -45,36 +47,50 @@
               "target": "Package",
               "version": "[2.0.30, )"
             },
+            "Dapper.Contrib": {
+              "target": "Package",
+              "version": "[2.0.30, )"
+            },
             "Microsoft.AspNetCore.App": {
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.1, )",
               "autoReferenced": true
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[2.1.6, )"
+            },
             "Microsoft.AspNetCore.Razor.Design": {
-              "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.2, )"
             },
             "Microsoft.NETCore.App": {
+              "suppressParent": "All",
               "target": "Package",
               "version": "[2.1.0, )",
               "autoReferenced": true
             },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
-              "version": "[2.1.9, )"
+              "version": "[2.1.10, )"
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[2.1.0, )"
+              "version": "[2.1.4, )"
             }
           },
           "imports": [
-            "net461"
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
           ],
           "assetTargetFallback": true,
-          "warn": true
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

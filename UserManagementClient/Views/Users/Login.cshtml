@@ -12,7 +12,6 @@
             <div class="col-xl-4 col-lg-10 col-md-7">
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="p-5">
@@ -95,66 +94,81 @@
 <script src="~/js/sb-admin-2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="https://kit.fontawesome.com/2248d5bdb1.js" crossorigin="anonymous"></script>
-    <script>
-        function Login() {
+<script>
+    function Login() {
+        debugger;
+        var user = new Object();
+        user.UserName = $("#UsernameText").val();
+        user.PasswordHash = $("#PasswordText").val();
+        $.ajax({
+            "url": "/Users/Login/",
+            "type": "Post",
+            "dataType": "json",
+            "data": { UserName: user.UserName, PasswordHash: user.PasswordHash }
+        }).then((result) => {
             debugger;
-            var user = new Object();
-            user.UserName = $("#UsernameText").val();
-            user.PasswordHash = $("#PasswordText").val();
-            $.ajax({
-                "url": "/Users/Login/",
-                "type": "Post",
-                "dataType": "json",
-                "data": { UserName: user.UserName, PasswordHash: user.PasswordHash }
-            }).then((result) => {
-                debugger;
-                if (result.statusCode == 200) {
-                    window.location.href = "/Roles/Index"
-                }
-                else if (result.statusCode == 300) {
-                    window.location.href = "/LockedAccount/" + result.locktoken;
-                }
-                else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'failed'
+            if (result.statusCode == 200) {
+                window.location.href = "/Users/Index"
+            }
+            else if (result.statusCode == 300) {
+                window.location.href = "/Users/LockedAccount/" + result.locktoken;
+            } else if (result.statusCode == 401) {
+                window.location.href = "Users/Login"
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You are not Authorize to continue'
 
-                    })
-                }
+                })
+            }
+            else if (result.statusCode == 400) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email Or Password is not match'
 
-            })
-        }
-        //function rememberMe() {
-        //    document.cookie = "$("'UsernameText'"); expires = "
+                })
+            }
 
-        //}
-        function ForgotPassword() {
+        });
+    }
+    //function rememberMe() {
+    //    document.cookie = "$("'UsernameText'"); expires = "
+
+    //}
+    function ForgotPassword() {
+        debugger;
+        var user = new Object();
+        user.Email = $("#EmailText").val();
+        $.ajax({
+            "url": "/Users/GenerateResetPasswordToken",
+            "type": "POST",
+            "dataType": "json",
+            "data": { Email: user.Email }
+        }).then((result) => {
             debugger;
-            var user = new Object();
-            user.Email = $("#EmailText").val();
-            $.ajax({
-                "url": "/Users/GenerateResetPasswordToken",
-                "type": "POST",
-                "dataType": "json",
-                "data": { Email: user.Email }
-            }).then((result) => {
-                debugger;
-                if (result != null) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success !',
-                        text:'Please Check Your Email ! Thank You !'
-                    })
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'failed'
-                    })
-                }
-            });
-        }
-    </script>
+            if (result != null) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success !',
+                    text: 'Please Check Your Email ! Thank You !'
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'failed'
+                })
+            }
+        });
+    }
+
+    function Logout() {
+        $.ajax({
+            "url": "/Users/Logout",
+            "type": "GET"
+        });
+    }
+</script>
 
 

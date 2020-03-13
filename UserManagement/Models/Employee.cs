@@ -19,7 +19,6 @@ namespace UserManagement.Models
         public DateTime BirthDate { get; set; }
         public string NIK { get; set; }
         public int Department_Id { get; set; }
-        public int Major_Id { get; set; }
         public int Religion_Id { get; set; }
         public int Degree_Id { get; set; }
         public int Regency_Id { get; set; }
@@ -33,8 +32,6 @@ namespace UserManagement.Models
 
         [ForeignKey("Department_Id")]
         public Department Departments { get; set; }
-        [ForeignKey("Major_Id")]
-        public Major Majors { get; set; }
         [ForeignKey("Religion_Id")]
         public Religion Religions { get; set; }
         [ForeignKey("Degree_Id")]
@@ -58,7 +55,6 @@ namespace UserManagement.Models
             BirthDate = userVM.BirthDate;
             NIK = userVM.NIK;
             Department_Id = userVM.Department_Id;
-            Major_Id = userVM.Major_Id;
             Religion_Id = userVM.Religion_Id;
             Regency_Id = userVM.Regency_Id;
             Degree_Id = userVM.Degree_Id;
@@ -79,7 +75,6 @@ namespace UserManagement.Models
             BirthDate = userVM.BirthDate;
             NIK = userVM.NIK;
             Department_Id = userVM.Department_Id;
-            Major_Id = userVM.Major_Id;
             Religion_Id = userVM.Religion_Id;
             Regency_Id = userVM.Regency_Id;
             Degree_Id = userVM.Degree_Id;

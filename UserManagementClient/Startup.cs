@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using UserManagementClient.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UserManagement.Auths;
+using Microsoft.AspNetCore.Authorization;
 
 namespace UserManagementClient
 {
@@ -33,7 +35,13 @@ namespace UserManagementClient
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "Role",
+                    policyBuilder => policyBuilder.AddRequirements(
+                        new AccessControl("Admin")));
+            });
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -42,7 +50,7 @@ namespace UserManagementClient
             services.AddSession(options =>
             {
                 // Set a short timeout for easy testing.
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
                 options.Cookie.HttpOnly = true;
                 // Make the session cookie essential
                 options.Cookie.IsEssential = true;
@@ -50,6 +58,7 @@ namespace UserManagementClient
             
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<IAuthorizationHandler, IsAdminHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

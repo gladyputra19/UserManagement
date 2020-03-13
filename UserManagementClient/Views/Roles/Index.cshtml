@@ -23,7 +23,6 @@
             <table id="dataTable" class="table table-responsive-lg">
                 <thead>
                     <tr>
-                        <th>Id</th>
                         <th>Name</th>
                         <th>Action</th>
                     </tr>
@@ -33,11 +32,6 @@
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">×</button>
-                            <h4 class="modal-title" id="myModalLabel"></h4>
-                        </div>
-
                         <div class="modal-body">
 
                             <div class="form-group">
@@ -108,7 +102,6 @@
                         //}
                     },
                     "columns": [
-                        { "data": "id" },
                         { "data": "name" },
 
                         {
@@ -136,15 +129,16 @@
                             "url": "/Roles/Delete/" + Id,
                             "dataType": "json",
                             "data": { id: Id }
-                        }).then((hasil) => {
+                        }).then((result) => {
                             debugger
-                            if (hasil.data[0] != 0) {
+                            if (result.data.statusCode == 200) {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Your data has been deleted',
-                                    text: 'Deleted!',
-                                    onclose: location.reload()
-                                })
+                                    text: 'Deleted!'
+                                }).then(() => {
+                                    $("#dataTable").DataTable().ajax.reload();
+                                });
                             }
                             else {
                                 Swal.fire({
@@ -153,9 +147,9 @@
                                     text: 'Failed!'
                                 })
                             }
-                        })
+                        });
                     }
-                })
+                });
             }
 
             function ClearScreen() {
@@ -166,16 +160,17 @@
             }
             function Edit() {
                 var role = new Object();
+                $("#Id").hide();
                 role.id = $("#RoleIdText").disabled;
                 role.id = $("#RoleIdText").val();
                 role.name = $("#RoleNameText").val();
-                role.division_Id = $("#DivisionIdText").val();
+                role.priority = $("#PriorityNameText").val();
                 debugger;
                 $.ajax({
-                    "url": "/Roles/Edit/",
-                    "type": "POST",
+                    "url": "/Roles/Edit",
+                    "type": "PUT",
                     "dataType": "Json",
-                    "data": { id: role.id, name: role.name, division_Id: role.division_Id }
+                    "data": { id: role.id, name: role.name, priority: role.priority }
                 }).then((result) => {
                     debugger;
                     if (result.data != null) {
@@ -198,17 +193,20 @@
             }
 
             function GetById(Id) {
+                debugger;
                 $.ajax({
                     "url": "/Roles/Details/" + Id,
                     "type": "GET",
                     "dataType": "json",
                     "data": { id: Id }
                 }).then((result) => {
+                    debugger;
                     if (result.data != null) {
-                        $("#RoleIdText").disabled = true;
+                        $("#Id").hide();
+                        $("#RoleIdText").hide();
                         $("#RoleIdText").val(result.data.id);
                         $("#RoleNameText").val(result.data.name);
-                        $("#DivisionIdText").val(result.data.division_Id);
+                        $("#PriorityText").val(result.data.priority);
                         $("#myModal").modal('show');
                         $("#Update").show();
                         $("#Save").hide();
@@ -231,7 +229,9 @@
                             'Suc!',
                             'Your file has been inserted.',
                             'success'
-                        )
+                        ).then(() => {
+                            $("#dataTable").DataTable().ajax.reload();
+                        });
                     } else {
                         Swal.fire(
                             'Failed!',
@@ -243,13 +243,11 @@
             }
 
             function Validation() {
-
                 if ($("#RoleNameText").val() == "" || $("#RoleNameText").val() == " ") {
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Please Fill The Name!',
-
                     })
                 }
                 else if ($("#RoleIdText").val() == "" || $("#RoleIdText").val() == " ") {
@@ -257,8 +255,6 @@
                 }
                 else {
                     Edit($("#RoleIdText").val());
-
-
                 }
             }
         </script>

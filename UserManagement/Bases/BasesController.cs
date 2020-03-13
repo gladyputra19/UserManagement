@@ -55,9 +55,8 @@ namespace UserManagement.Bases
         [HttpPut("{Id}")]
         public async Task<IActionResult> Put(int Id, TEntity entity)
         {
-            var ent = await _repository.Get(Id);
-            ent.Update();
-            var put = await _repository.Put(ent);
+            entity.Update();
+            var put = await _repository.Put(entity);
             if (put == true)
             {
                 return Ok("Update Success");

@@ -37,12 +37,12 @@ namespace UserManagement.Repositories.Data
             return roles;
         }
 
-        public async Task<IEnumerable<Role>> Get(string Id)
+        public Role Get(string Id)
         {
             var procName = "SP_GetRoleById";
             param.Add("@p_Id", Id);
 
-            var roles = await _connectionString.Connections.QueryAsync<Role>(procName, param, commandType: System.Data.CommandType.StoredProcedure);
+            var roles = _connectionString.Connections.QueryAsync<Role>(procName, param, commandType: System.Data.CommandType.StoredProcedure).Result.SingleOrDefault();
             return roles;
         }
     }

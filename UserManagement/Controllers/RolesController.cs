@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using UserManagement.Auths;
 using UserManagement.Models;
 using UserManagement.Services.Interfaces;
 using UserManagement.ViewModels;
 
 namespace UserManagement.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("[controller]")]
     [ApiController]
     public class RolesController : ControllerBase
@@ -23,10 +23,12 @@ namespace UserManagement.Controllers
         private readonly RoleManager<Role> _roleManager;
         IConfiguration _configuration;
         IRoleService _roleService;
+        UserManager<Employee> _userManager;
         public RolesController(
             IRoleService roleService,
             RoleManager<Role> roleManager,
             IConfiguration configuration
+
             )
         {
             _roleService = roleService;
@@ -39,9 +41,9 @@ namespace UserManagement.Controllers
             return _roleService.Get();
         }
         [HttpGet("{Id}")]
-        
-        public Task<IEnumerable<Role>> Get(string Id)
+        public Role Get(string Id)
         {
+
             return _roleService.Get(Id);
         }
 
@@ -84,11 +86,12 @@ namespace UserManagement.Controllers
             return BadRequest();
         }
         [HttpPut("{Id}")]
-        public async Task<IActionResult> Put(int Id,RoleVM roleVM)
+        public async Task<IActionResult> Put(string Id,RoleVM roleVM)
         {
             if (ModelState.IsValid)
             {
-                var role = new Role();
+
+                var role = await _roleManager.FindByIdAsync(Id);
                 role.Id = roleVM.Id;
                 role.Name = roleVM.Name;
                 role.Priority = roleVM.Priority;

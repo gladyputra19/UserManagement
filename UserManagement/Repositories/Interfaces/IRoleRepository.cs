@@ -10,6 +10,6 @@ namespace UserManagement.Repositories.Interfaces
     public interface IRoleRepository
     {
         IEnumerable<Role> Get();
-        Task<IEnumerable<Role>> Get(string Id);
+        Role Get(string Id);
     }
 }
